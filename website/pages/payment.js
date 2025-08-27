@@ -19,7 +19,7 @@ export default function PaymentManagement() {
   const fetchBookingSlips = useCallback(() => {
     setLoading(true);
     axios
-      .get("http://localhost:20505/api/admin/payment/booking-slips", {
+      .get("http://10.80.21.37:20505/api/admin/payment/booking-slips", {
         params: { status: statusFilter },
       })
       .then((response) => {
@@ -53,7 +53,7 @@ export default function PaymentManagement() {
   const handleStatusUpdate = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:20505/api/admin/payment/booking-slips",
+        "http://10.80.21.37:20505/api/admin/payment/booking-slips",
         {
           booking_id: selectedSlip.booking_id,
           payment_status: selectedSlip.payment_status,
@@ -77,7 +77,7 @@ export default function PaymentManagement() {
     if (confirm("Are you sure you want to delete this booking slip?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:20505/api/admin/payment/booking-slips/${booking_id}`
+          `http://10.80.21.37:20505/api/admin/payment/booking-slips/${booking_id}`
         );
         swal("Success", response.data.message, "success");
         fetchBookingSlips();

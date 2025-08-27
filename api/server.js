@@ -3,12 +3,10 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ เปิด CORS ให้ frontend (localhost:10505) เข้าถึงได้
-app.use(cors({ origin: "http://localhost:10505", credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 
 app.use(express.json());
 
-// import routes
 const serviceTypesRoute = require("./routes/serviceTypes");
 const petTypesRoute = require("./routes/petTypes");
 const sitterRoute = require("./routes/sitters");
@@ -20,7 +18,7 @@ app.use("/api/admin/sitter", sitterRoute);
 app.use("/api/admin/payment", paymentRoute);
 
 app.get("/", (req, res) => {
-  res.send("API running with Express + PostgreSQL + CORS enabled");
+  res.send("API running");
 });
 
 const PORT = process.env.PORT || 3001;

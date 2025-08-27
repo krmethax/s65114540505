@@ -23,7 +23,7 @@ export default function PetTypes() {
   const fetchPetTypes = useCallback(() => {
     setLoading(true);
     axios
-      .get("http://localhost:20505/api/admin/pet-types/")
+      .get("http://10.80.21.37:20505/api/admin/pet-types/")
       .then((response) => {
         setPetTypes(response.data || []); // ใช้ response.data โดยตรง
         setLoading(false);
@@ -72,7 +72,7 @@ export default function PetTypes() {
     try {
       if (modalMode === "add") {
         const response = await axios.post(
-          "http://localhost:20505/api/admin/pet-types",
+          "http://10.80.21.37:20505/api/admin/pet-types",
           {
             type_name: formData.type_name,
             description: formData.description,
@@ -81,7 +81,7 @@ export default function PetTypes() {
         swal("Success", response.data.message, "success");
       } else if (modalMode === "edit") {
         const response = await axios.put(
-          "http://localhost:20505/api/admin/pet-types",
+          "http://10.80.21.37:20505/api/admin/pet-types",
           {
             pet_type_id: formData.pet_type_id,
             type_name: formData.type_name,
@@ -107,7 +107,7 @@ export default function PetTypes() {
     if (confirm("Are you sure you want to delete this pet type?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:20505/api/admin/pet-types/${pet_type_id}`
+          `http://10.80.21.37:20505/api/admin/pet-types/${pet_type_id}`
         );
         swal("Success", response.data.message, "success");
         fetchPetTypes();

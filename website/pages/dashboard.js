@@ -19,7 +19,7 @@ export default function Dashboard() {
   // ดึงข้อมูลพี่เลี้ยงจาก API
   useEffect(() => {
     axios
-      .get("http://localhost:20505/api/admin/sitter/")
+      .get("http://10.80.21.37:20505/api/admin/sitter/")
       .then((res) => {
         if (res.data && res.data.registrations) {
           setRegistrations(res.data.registrations);
@@ -67,7 +67,7 @@ export default function Dashboard() {
   const handleManage = async (decision) => {
     try {
       const response = await axios.post(
-        "http://localhost:20505/api/admin/update-sitter-status",
+        "http://10.80.21.37:20505/api/admin/update-sitter-status",
         {
           sitter_id: selectedRegistration.sitter_id,
           status: decision,

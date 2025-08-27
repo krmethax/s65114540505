@@ -18,7 +18,7 @@ export default function ServiceTypes() {
   const fetchServiceTypes = useCallback(() => {
     setLoading(true);
     axios
-      .get("http://localhost:20505/api/admin/service-types")
+      .get("http://10.80.21.37:20505/api/admin/service-types")
       .then((res) => {
         console.log("Fetched rows:", res.data);
         setServiceTypes(res.data.serviceTypes || []);
@@ -60,13 +60,13 @@ export default function ServiceTypes() {
     e.preventDefault();
     try {
       if (modalMode === "add") {
-        const res = await axios.post("http://localhost:20505/api/admin/service-types", {
+        const res = await axios.post("http://10.80.21.37:20505/api/admin/service-types", {
           short_name: formData.short_name,
           full_description: formData.full_description,
         });
         swal("Success", res.data.message, "success");
       } else {
-        const res = await axios.put("http://localhost:20505/api/admin/service-types", {
+        const res = await axios.put("http://10.80.21.37:20505/api/admin/service-types", {
           service_type_id: formData.service_type_id,
           short_name: formData.short_name,
           full_description: formData.full_description,
@@ -85,7 +85,7 @@ export default function ServiceTypes() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this service type?")) return;
     try {
-      const res = await axios.delete(`http://localhost:20505/api/admin/service-types/${id}`);
+      const res = await axios.delete(`http://10.80.21.37:20505/api/admin/service-types/${id}`);
       swal("Success", res.data.message, "success");
       fetchServiceTypes();
     } catch (err) {
