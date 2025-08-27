@@ -21,8 +21,7 @@ services:
       dockerfile: Dockerfile
     container_name: api
     restart: always
-    ports:
-      - "${API_PORT}:3001"
+    # ❌ ไม่ expose port ออกมา
     environment:
       NODE_ENV: development
       PORT: ${API_PORT}
