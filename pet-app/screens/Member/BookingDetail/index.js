@@ -19,6 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function BookingDetail() {
   const navigation = useNavigation();
@@ -60,7 +61,7 @@ export default function BookingDetail() {
 
   // Fetch service types
   useEffect(() => {
-    fetch("http://192.168.1.12:5000/api/auth/service-type")
+    fetch(buildApiUrl("/auth/service-type"))
       .then((response) => response.json())
       .then((data) => {
         if (data.serviceTypes) {
@@ -72,7 +73,7 @@ export default function BookingDetail() {
 
   // Fetch pet categories
   useEffect(() => {
-    fetch("http://192.168.1.12:5000/api/auth/pet-categories")
+    fetch(buildApiUrl("/auth/pet-categories"))
       .then((response) => response.json())
       .then((data) => {
         if (data.petCategories) {
@@ -97,7 +98,7 @@ export default function BookingDetail() {
   const fetchPaymentMethod = useCallback(() => {
     if (job?.sitter_id) {
       return fetch(
-        `http://192.168.1.12:5000/api/auth/payment-methods/${job.sitter_id}`
+        buildApiUrl(`/auth/payment-methods/${job.sitter_id}`)
       )
         .then((response) => response.json())
         .then((data) => {
@@ -161,7 +162,7 @@ export default function BookingDetail() {
 
     console.log("Payload for booking:", createPayload); // Log payload to check data
 
-    const response = await fetch("http://192.168.1.12:5000/api/auth/create", {
+    const response = await fetch(buildApiUrl("/auth/create"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(createPayload),
@@ -186,7 +187,7 @@ export default function BookingDetail() {
     formData.append("image", { uri: slipImage, name: filename, type });
 
     const response = await fetch(
-      "http://192.168.1.12:5000/api/bookings/upload-payment-slip",
+      buildApiUrl("/bookings/upload-payment-slip"),
       {
         method: "POST",
         body: formData,
@@ -468,3 +469,4 @@ const styles = StyleSheet.create({
     height: 35, // Set a smaller height for the input field
   },
 });
+

@@ -17,6 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function SitterLogin() {
   const navigation = useNavigation();
@@ -62,7 +63,7 @@ export default function SitterLogin() {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://192.168.1.12:5000/api/sitter/login-sitter",
+        buildApiUrl("/sitter/login-sitter"),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -304,3 +305,4 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
+

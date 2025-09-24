@@ -14,6 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function PaymentMethod() {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ export default function PaymentMethod() {
   const fetchPaymentMethods = useCallback(() => {
     if (sitterId) {
       setLoading(true);
-      fetch(`http://192.168.1.12:5000/api/sitter/payment-methods/${sitterId}`)
+      fetch(buildApiUrl(`/sitter/payment-methods/${sitterId}`))
         .then((response) => response.json())
         .then((data) => {
           if (data.paymentMethods) {
@@ -103,7 +104,7 @@ export default function PaymentMethod() {
       bank_name: "",
     };
 
-    fetch("http://192.168.1.12:5000/api/sitter/payment-methods", {
+    fetch(buildApiUrl("/sitter/payment-methods"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -386,3 +387,4 @@ const styles = StyleSheet.create({
   },
   loading: { flex: 1, justifyContent: "center", alignItems: "center" },
 });
+

@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function Favorite() {
   const navigation = useNavigation();
@@ -42,7 +43,7 @@ export default function Favorite() {
   const fetchFavorites = async () => {
     if (!memberId) return;
     try {
-      const response = await fetch(`http://192.168.1.12:5000/api/auth/favorite/${memberId}`);
+      const response = await fetch(buildApiUrl(`/auth/favorite/${memberId}`));
       const data = await response.json();
       if (response.ok) {
         // สมมติว่า API ส่งกลับมาเป็น { favorites: [...] }
@@ -131,3 +132,4 @@ const styles = StyleSheet.create({
   avatarImage: { width: 50, height: 50, borderRadius: 25 },
   sitterName: { fontSize: 16, fontFamily: "Prompt-Regular", color: "#000" },
 });
+

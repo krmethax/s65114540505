@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const DEFAULT_API_BASE_URL = "/s65114540505/api";
+const DEFAULT_API_BASE_URL = "/api";
 
 const resolveBaseUrl = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -15,3 +15,4 @@ const apiClient = axios.create({
 });
 
 export default apiClient;
+

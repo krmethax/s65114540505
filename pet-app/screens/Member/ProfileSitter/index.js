@@ -21,6 +21,7 @@ import {
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function ProfileSitter() {
   const route = useRoute();
@@ -56,7 +57,7 @@ export default function ProfileSitter() {
 
   // ดึงข้อมูลโปรไฟล์พี่เลี้ยง
   const fetchProfile = useCallback(() => {
-    fetch(`http://192.168.1.12:5000/api/auth/sitter/${sitter_id}`)
+    fetch(buildApiUrl(`/auth/sitter/${sitter_id}`))
       .then((response) => response.json())
       .then((data) => {
         if (data.sitter) {
@@ -70,7 +71,7 @@ export default function ProfileSitter() {
 
   // ดึงข้อมูลงานของพี่เลี้ยง
   const fetchJobs = useCallback(() => {
-    fetch("http://192.168.1.12:5000/api/auth/sitter-services")
+    fetch(buildApiUrl("/auth/sitter-services"))
       .then((response) => response.json())
       .then((data) => {
         if (data.services) {
@@ -85,7 +86,7 @@ export default function ProfileSitter() {
 
   // ดึงข้อมูลประเภทบริการ
   useEffect(() => {
-    fetch("http://192.168.1.12:5000/api/auth/service-type")
+    fetch(buildApiUrl("/auth/service-type"))
       .then((response) => response.json())
       .then((data) => {
         if (data.serviceTypes) {
@@ -101,7 +102,7 @@ export default function ProfileSitter() {
 
   // ดึงข้อมูลประเภทสัตว์เลี้ยง
   useEffect(() => {
-    fetch("http://192.168.1.12:5000/api/auth/pet-categories")
+    fetch(buildApiUrl("/auth/pet-categories"))
       .then((response) => response.json())
       .then((data) => {
         if (data.petCategories) {
@@ -118,7 +119,7 @@ export default function ProfileSitter() {
     if (!memberId) return;
     try {
       const response = await fetch(
-        `http://192.168.1.12:5000/api/auth/favorite/${memberId}`
+        buildApiUrl(`/auth/favorite/${memberId}`)
       );
       const data = await response.json();
       if (response.ok && data.favorites) {
@@ -135,7 +136,7 @@ export default function ProfileSitter() {
   // ดึงค่าเฉลี่ย rating จาก API Reviews ของพี่เลี้ยง
   useEffect(() => {
     if (sitter_id) {
-      fetch(`http://192.168.1.12:5000/api/auth/reviews/sitter/${sitter_id}`)
+      fetch(buildApiUrl(`/auth/reviews/sitter/${sitter_id}`))
         .then((response) => response.json())
         .then((data) => {
           if (data.averageRating !== undefined) {
@@ -168,7 +169,7 @@ export default function ProfileSitter() {
   const addFavorite = async () => {
     if (!memberId) return;
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/auth/favorite", {
+      const response = await fetch(buildApiUrl("/auth/favorite"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ member_id: memberId, sitter_id }),
@@ -190,7 +191,7 @@ export default function ProfileSitter() {
     if (!memberId) return;
     try {
       const response = await fetch(
-        `http://192.168.1.12:5000/api/auth/favorite/${memberId}/${sitter_id}`,
+        buildApiUrl(`/auth/favorite/${memberId}/${sitter_id}`),
         { method: "DELETE" }
       );
       const data = await response.json();
@@ -528,3 +529,4 @@ const styles = StyleSheet.create({
   bookButtonDisabled: { opacity: 0.5 },
   bookButtonText: { fontSize: 16, color: "#fff", fontFamily: "Prompt-Bold" },
 });
+

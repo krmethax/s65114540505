@@ -13,6 +13,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function SitterSignUp({ navigation }) {
   const [step, setStep] = useState(1);
@@ -127,7 +128,7 @@ export default function SitterSignUp({ navigation }) {
     if (!validateRegistration()) return;
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/register-sitter", {
+      const response = await fetch(buildApiUrl("/sitter/register-sitter"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -157,7 +158,7 @@ export default function SitterSignUp({ navigation }) {
     }
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/verify-otp-sitter", {
+      const response = await fetch(buildApiUrl("/sitter/verify-otp-sitter"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -209,7 +210,7 @@ export default function SitterSignUp({ navigation }) {
         amphure: profileData.amphure,
         province: profileData.province,
       };
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/update-profile-sitter", {
+      const response = await fetch(buildApiUrl("/sitter/update-profile-sitter"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -241,7 +242,7 @@ export default function SitterSignUp({ navigation }) {
     if (!validateDocuments()) return;
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/verify-account", {
+      const response = await fetch(buildApiUrl("/sitter/verify-account"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -285,11 +286,11 @@ export default function SitterSignUp({ navigation }) {
         });
         let endpoint = "";
         if (key === "profile_image") {
-          endpoint = "http://192.168.1.12:5000/api/sitter/upload-profile-image";
+          endpoint = buildApiUrl("/sitter/upload-profile-image");
         } else if (key === "faceImage") {
-          endpoint = "http://192.168.1.12:5000/api/sitter/upload-face-image";
+          endpoint = buildApiUrl("/sitter/upload-face-image");
         } else if (key === "idCardImage") {
-          endpoint = "http://192.168.1.12:5000/api/sitter/upload-idcard-image";
+          endpoint = buildApiUrl("/sitter/upload-idcard-image");
         } else {
           setLoading(false);
           Alert.alert("ข้อผิดพลาด", "ประเภทของรูปไม่ถูกต้อง");
@@ -342,7 +343,7 @@ export default function SitterSignUp({ navigation }) {
   const handleCancelRegistration = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/delete-registration", {
+      const response = await fetch(buildApiUrl("/sitter/delete-registration"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sitter_id: sitterId }),
@@ -759,3 +760,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
 });
+

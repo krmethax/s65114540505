@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { buildApiUrl } from "../../../utils/api.js";
 
 // ฟังก์ชันเพื่อเปรียบเทียบเวลา
 const isOverlapping = (start1, end1, start2, end2) => {
@@ -44,7 +45,7 @@ export default function Jobs() {
 
   const fetchServiceTypes = useCallback(async () => {
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/service-types");
+      const response = await fetch(buildApiUrl("/sitter/service-types"));
       if (!response.ok) {
         throw new Error("ไม่สามารถดึงข้อมูลประเภทงานได้");
       }
@@ -67,7 +68,7 @@ export default function Jobs() {
     if (sitterId) {
       setLoading(true);
       try {
-        const response = await fetch(`http://192.168.1.12:5000/api/sitter/jobs/${sitterId}`);
+        const response = await fetch(buildApiUrl(`/sitter/jobs/${sitterId}`));
         if (!response.ok) {
           throw new Error("ไม่สามารถดึงข้อมูลงานได้");
         }
@@ -169,7 +170,7 @@ export default function Jobs() {
     }
 
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/jobs/accept", {
+      const response = await fetch(buildApiUrl("/sitter/jobs/accept"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ booking_id: job.jobId, sitter_id: sitterId }),
@@ -191,7 +192,7 @@ export default function Jobs() {
   const handleCancelJob = async (job) => {
     if (!job || !sitterId) return;
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/sitter/jobs/cancel", {
+      const response = await fetch(buildApiUrl("/sitter/jobs/cancel"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ booking_id: job.jobId, sitter_id: sitterId }),
@@ -381,3 +382,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+

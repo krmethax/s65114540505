@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function Booking() {
   const navigation = useNavigation();
@@ -45,7 +46,7 @@ export default function Booking() {
   const fetchBookings = useCallback(() => {
     if (!memberId) return;
     setLoading(true);
-    fetch(`http://192.168.1.12:5000/api/auth/member/${memberId}/bookings`)
+    fetch(buildApiUrl(`/auth/member/${memberId}/bookings`))
       .then((res) => res.json())
       .then((data) => setBookings(data.bookings || []))
       .catch(console.error)
@@ -97,7 +98,7 @@ export default function Booking() {
 
   // ฟังก์ชันสำหรับยกเลิกบริการ
   const cancelService = (bookingId) => {
-    fetch(`http://192.168.1.12:5000/api/auth/member/cancel-service`, {
+    fetch(buildApiUrl(`/auth/member/cancel-service`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ booking_id: bookingId, member_id: memberId }),
@@ -240,3 +241,4 @@ const styles = StyleSheet.create({
   cancelButton: { marginTop: 12, backgroundColor: '#000', paddingVertical: 10, borderRadius: 5, alignItems: 'center' },
   cancelButtonText: { color: '#fff', fontFamily: 'Prompt-Bold', fontSize: 16 },
 });
+

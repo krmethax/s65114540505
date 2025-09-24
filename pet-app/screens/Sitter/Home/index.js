@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { buildApiUrl } from "../../../utils/api.js";
 
 // Helper: แปลงรายได้ให้แสดงโดยไม่แสดง .00 ถ้าเป็นจำนวนเต็ม
 const formatIncome = (income) => {
@@ -49,7 +50,7 @@ export default function Home() {
   // ดึงข้อมูลพี่เลี้ยงจาก API (รวมสถิติ)
   const fetchUser = useCallback(() => {
     if (sitterId) {
-      fetch(`http://192.168.1.12:5000/api/sitter/sitter/${sitterId}`)
+      fetch(buildApiUrl(`/sitter/sitter/${sitterId}`))
         .then(async (response) => {
           if (!response.ok) {
             const text = await response.text();
@@ -75,7 +76,7 @@ export default function Home() {
   // ดึงข้อมูลรายได้และงานที่รับไปแล้วจาก API
   const fetchIncomeStats = useCallback(() => {
     if (sitterId) {
-      fetch(`http://192.168.1.12:5000/api/sitter/sitter/income-stats/${sitterId}`)
+      fetch(buildApiUrl(`/sitter/sitter/income-stats/${sitterId}`))
         .then(async (response) => {
           if (!response.ok) {
             const text = await response.text();
@@ -246,3 +247,4 @@ const styles = StyleSheet.create({
   statValue: { fontSize: 22, fontFamily: "Prompt-Bold", color: "#000" },
   statLabel: { fontSize: 14, fontFamily: "Prompt-Regular", color: "#666" },
 });
+

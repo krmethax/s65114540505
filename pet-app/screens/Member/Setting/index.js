@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function Setting() {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ export default function Setting() {
   // ดึงข้อมูลผู้ใช้งานเมื่อได้ memberId
   useEffect(() => {
     if (memberId) {
-      fetch(`http://192.168.1.12:5000/api/auth/member/${memberId}`)
+      fetch(buildApiUrl(`/auth/member/${memberId}`))
         .then(async (response) => {
           if (!response.ok) {
             const text = await response.text();
@@ -215,3 +216,4 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
 });
+

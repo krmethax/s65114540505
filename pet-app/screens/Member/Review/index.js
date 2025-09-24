@@ -1,3 +1,4 @@
+import { buildApiUrl } from "../../../utils/api.js";
 // Review.js
 import React, { useState } from 'react';
 import { 
@@ -39,7 +40,7 @@ export default function Review() {
     }
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.1.12:5000/api/auth/review', {
+      const response = await fetch(buildApiUrl('/auth/review'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -214,3 +215,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Prompt-Bold',
   },
 });
+

@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function MemberLogin() {
   const navigation = useNavigation();
@@ -67,7 +68,7 @@ export default function MemberLogin() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/auth/login", {
+      const response = await fetch(buildApiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -368,3 +369,4 @@ const styles = StyleSheet.create({
     fontFamily: "Prompt-Medium",
   },
 });
+

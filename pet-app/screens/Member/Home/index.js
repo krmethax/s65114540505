@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { buildApiUrl } from "../../../utils/api.js";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const scale = SCREEN_WIDTH / 375;
@@ -48,7 +49,7 @@ export default function Home() {
   // ดึงข้อมูลผู้ใช้ (สมาชิก)
   const fetchUser = useCallback(() => {
     if (!memberId) return;
-    fetch(`http://192.168.1.12:5000/api/auth/member/${memberId}`)
+    fetch(buildApiUrl(`/auth/member/${memberId}`))
       .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.error("Error fetching user:", err));
@@ -56,7 +57,7 @@ export default function Home() {
 
   // ดึงข้อมูลพี่เลี้ยงทั้งหมด
   const fetchSitters = useCallback(() => {
-    fetch("http://192.168.1.12:5000/api/auth/sitters")
+    fetch(buildApiUrl("/auth/sitters"))
       .then((res) => res.json())
       .then((data) => {
         setSitters(data.sitters || []);
@@ -66,7 +67,7 @@ export default function Home() {
 
   // ดึงข้อมูลประเภทสัตว์เลี้ยงจาก API
   const fetchPetCategories = useCallback(() => {
-    fetch("http://192.168.1.12:5000/api/auth/pet-categories")
+    fetch(buildApiUrl("/auth/pet-categories"))
       .then((res) => res.json())
       .then((data) => setPetCategories(data.petCategories || []))
       .catch((err) => console.error("Error fetching pet categories:", err));
@@ -92,7 +93,7 @@ export default function Home() {
       for (let sitter of sitters) {
         try {
           const response = await fetch(
-            `http://192.168.1.12:5000/api/auth/reviews/sitter/${sitter.sitter_id}`
+            buildApiUrl(`/auth/reviews/sitter/${sitter.sitter_id}`)
           );
           const data = await response.json();
           newRatings[sitter.sitter_id] = data.averageRating || 0;
@@ -373,3 +374,4 @@ const styles = StyleSheet.create({
     color: "#000",
   },
 });
+

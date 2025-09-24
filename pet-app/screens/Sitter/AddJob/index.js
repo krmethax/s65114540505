@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { AntDesign } from "@expo/vector-icons";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function AddJob() {
   const navigation = useNavigation();
@@ -42,7 +43,7 @@ export default function AddJob() {
   const fetchServiceTypes = async () => {
     try {
       const resp = await fetch(
-        "http://192.168.1.12:5000/api/sitter/service-types"
+        buildApiUrl("/sitter/service-types")
       );
       const json = await resp.json();
       setServiceTypes(json.serviceTypes || []);
@@ -54,7 +55,7 @@ export default function AddJob() {
   const fetchPetTypes = async () => {
     try {
       const resp = await fetch(
-        "http://192.168.1.12:5000/api/sitter/pet-types"
+        buildApiUrl("/sitter/pet-types")
       );
       const json = await resp.json();
       setPetTypes(json.petTypes || []);
@@ -80,7 +81,7 @@ export default function AddJob() {
     };
     try {
       const resp = await fetch(
-        "http://192.168.1.12:5000/api/sitter/add-job",
+        buildApiUrl("/sitter/add-job"),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -240,3 +241,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+

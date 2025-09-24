@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function MyServices() {
   const navigation = useNavigation();
@@ -34,7 +35,7 @@ export default function MyServices() {
       return;
     }
     setRefreshing(true);
-    fetch(`http://192.168.1.12:5000/api/sitter/sitter-services/${sitterId}`)
+    fetch(buildApiUrl(`/sitter/sitter-services/${sitterId}`))
       .then(async (res) => {
         if (!res.ok) throw new Error(await res.text());
         return res.json();
@@ -50,14 +51,14 @@ export default function MyServices() {
 
   useEffect(() => {
     // fetch service types
-    fetch("http://192.168.1.12:5000/api/sitter/service-types")
+    fetch(buildApiUrl("/sitter/service-types"))
       .then((res) => res.json())
       .then((json) => {
         if (Array.isArray(json.serviceTypes)) setServiceTypes(json.serviceTypes);
       })
       .catch(console.error);
     // fetch pet types
-    fetch("http://192.168.1.12:5000/api/sitter/pet-types")
+    fetch(buildApiUrl("/sitter/pet-types"))
       .then((res) => res.json())
       .then((json) => {
         if (Array.isArray(json.petTypes)) setPetTypes(json.petTypes);
@@ -72,7 +73,7 @@ export default function MyServices() {
         text: "ลบ",
         onPress: () =>
           fetch(
-            `http://192.168.1.12:5000/api/sitter/sitter-service/${id}`,
+            buildApiUrl(`/sitter/sitter-service/${id}`),
             { method: "DELETE" }
           )
             .then((r) =>

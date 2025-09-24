@@ -167,12 +167,6 @@ export default function PaymentManagement() {
                   ))}
                 </tbody>
               </table>
-              <button
-                style={styles.addButton}
-                onClick={() => router.push("/add-payment")}
-              >
-                Add Payment
-              </button>
             </>
           )}
         </main>

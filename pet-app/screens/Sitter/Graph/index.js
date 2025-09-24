@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PieChart } from "react-native-svg-charts";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { Picker } from "@react-native-picker/picker";
+import { buildApiUrl } from "../../../utils/api.js";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -38,7 +39,7 @@ export default function ExpensesReport() {
       const sitterId = await AsyncStorage.getItem("sitter_id");
       if (!sitterId) throw new Error("No sitter_id");
       const resp = await fetch(
-        `http://192.168.1.12:5000/api/sitter/sitter/income-stats/${sitterId}`
+        buildApiUrl(`/sitter/sitter/income-stats/${sitterId}`)
       );
       if (!resp.ok) throw new Error(await resp.text());
       const { stats: apiStats, incomeStats: apiInc } = await resp.json();
@@ -302,3 +303,4 @@ const styles = StyleSheet.create({
   amountMinus: { color: "#e53935" },
   separator: { height: 1, backgroundColor: "#eee", width: "100%" },
 });
+

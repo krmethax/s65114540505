@@ -16,6 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { buildApiUrl } from "../../../utils/api.js";
 
 export default function MemberSignup() {
   const navigation = useNavigation();
@@ -132,7 +133,7 @@ export default function MemberSignup() {
     if (!validateRegistration()) return;
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/auth/register", {
+      const response = await fetch(buildApiUrl("/auth/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -166,7 +167,7 @@ export default function MemberSignup() {
     if (!validateOTP()) return;
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/auth/verify-otp", {
+      const response = await fetch(buildApiUrl("/auth/verify-otp"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ member_id: memberId, otp_code: otp.join("") }),
@@ -215,7 +216,7 @@ export default function MemberSignup() {
         province: profileData.province,
       };
 
-      const response = await fetch("http://192.168.1.12:5000/api/auth/update-profile", {
+      const response = await fetch(buildApiUrl("/auth/update-profile"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -256,7 +257,7 @@ export default function MemberSignup() {
         });
         let endpoint = "";
         if (key === "profile_image") {
-          endpoint = "http://192.168.1.12:5000/api/member/upload-profile-image";
+          endpoint = buildApiUrl("/member/upload-profile-image");
         } else {
           setLoading(false);
           Alert.alert("ข้อผิดพลาด", "ประเภทของรูปไม่ถูกต้อง");
@@ -310,7 +311,7 @@ export default function MemberSignup() {
   const handleCancelRegistration = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.1.12:5000/api/auth/delete-registration", {
+      const response = await fetch(buildApiUrl("/auth/delete-registration"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ member_id: memberId }),
@@ -790,3 +791,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
