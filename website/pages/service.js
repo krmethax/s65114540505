@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import apiClient from "../utils/apiClient";
 import swal from "sweetalert";
 import Sidebar from "../components/Sidebar";
 
@@ -17,8 +17,8 @@ export default function ServiceTypes() {
   // ดึงข้อมูล Service_Types
   const fetchServiceTypes = useCallback(() => {
     setLoading(true);
-    axios
-      .get("http://10.80.21.37:20505/api/admin/service-types")
+    apiClient
+      .get("/admin/service-types")
       .then((res) => {
         console.log("Fetched rows:", res.data);
         setServiceTypes(res.data.serviceTypes || []);
@@ -60,13 +60,13 @@ export default function ServiceTypes() {
     e.preventDefault();
     try {
       if (modalMode === "add") {
-        const res = await axios.post("http://10.80.21.37:20505/api/admin/service-types", {
+        const res = await apiClient.post("/admin/service-types", {
           short_name: formData.short_name,
           full_description: formData.full_description,
         });
         swal("Success", res.data.message, "success");
       } else {
-        const res = await axios.put("http://10.80.21.37:20505/api/admin/service-types", {
+        const res = await apiClient.put("/admin/service-types", {
           service_type_id: formData.service_type_id,
           short_name: formData.short_name,
           full_description: formData.full_description,
@@ -85,7 +85,7 @@ export default function ServiceTypes() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this service type?")) return;
     try {
-      const res = await axios.delete(`http://10.80.21.37:20505/api/admin/service-types/${id}`);
+      const res = await apiClient.delete(`/admin/service-types/${id}`);
       swal("Success", res.data.message, "success");
       fetchServiceTypes();
     } catch (err) {
@@ -177,3 +177,4 @@ const styles = {
   submitButton: { backgroundColor: "#28A745", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer", color: "#FFF", fontWeight: "bold" },
   cancelButton: { backgroundColor: "#6C757D", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer", color: "#FFF", fontWeight: "bold" },
 };
+

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../utils/apiClient";
 import swal from "sweetalert";
 import CountUp from "react-countup";
 import Sidebar from "../components/Sidebar";
@@ -18,8 +18,8 @@ export default function Dashboard() {
 
   // ดึงข้อมูลพี่เลี้ยงจาก API
   useEffect(() => {
-    axios
-      .get("http://10.80.21.37:20505/api/admin/sitter/")
+    apiClient
+      .get("/admin/sitter/")
       .then((res) => {
         if (res.data && res.data.registrations) {
           setRegistrations(res.data.registrations);
@@ -66,8 +66,8 @@ export default function Dashboard() {
   // ฟังก์ชันสำหรับจัดการสถานะ (Approve/Reject)
   const handleManage = async (decision) => {
     try {
-      const response = await axios.post(
-        "http://10.80.21.37:20505/api/admin/update-sitter-status",
+      const response = await apiClient.post(
+        "/admin/update-sitter-status",
         {
           sitter_id: selectedRegistration.sitter_id,
           status: decision,
@@ -353,3 +353,4 @@ const styles = {
     cursor: "pointer",
   },
 };
+

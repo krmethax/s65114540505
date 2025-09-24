@@ -10,24 +10,19 @@ const Sidebar = () => {
       <nav className={styles.nav}>
         <ul>
           <li>
-            <a href='/dashboard'>
-              หน้าแรก
-            </a>
+            <a href='/dashboard'>หน้าแรก</a>
           </li>
           <li>
-            <a href='/service'>
-              ประเภทบริการ
-            </a>
+            <a href='/service'>ประเภทบริการ</a>
           </li>
           <li>
-            <a href='/pet_types'>
-              ประเภทสัตว์เลี้ยง
-            </a>
+            <a href='/pet_types'>ประเภทสัตว์เลี้ยง</a>
           </li>
           <li>
-            <a href='/payment'>
-              การจัดการชำระเงิน
-            </a>
+            <a href='/payment'>การจัดการชำระเงิน</a>
+          </li>
+          <li>
+            <a href='/'>Logout</a>
           </li>
         </ul>
       </nav>

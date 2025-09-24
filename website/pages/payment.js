@@ -1,7 +1,7 @@
 // pages/payment.js
 
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import apiClient from "../utils/apiClient";
 import swal from "sweetalert";
 import CountUp from "react-countup";
 import Sidebar from "../components/Sidebar";
@@ -18,8 +18,8 @@ export default function PaymentManagement() {
   // ดึงข้อมูลสลิปการจองจาก API
   const fetchBookingSlips = useCallback(() => {
     setLoading(true);
-    axios
-      .get("http://10.80.21.37:20505/api/admin/payment/booking-slips", {
+    apiClient
+      .get("/admin/payment/booking-slips", {
         params: { status: statusFilter },
       })
       .then((response) => {
@@ -52,8 +52,8 @@ export default function PaymentManagement() {
   // อัปเดตสถานะสลิปการจอง
   const handleStatusUpdate = async () => {
     try {
-      const response = await axios.put(
-        "http://10.80.21.37:20505/api/admin/payment/booking-slips",
+      const response = await apiClient.put(
+        "/admin/payment/booking-slips",
         {
           booking_id: selectedSlip.booking_id,
           payment_status: selectedSlip.payment_status,
@@ -76,8 +76,8 @@ export default function PaymentManagement() {
   const handleDeleteSlip = async (booking_id) => {
     if (confirm("Are you sure you want to delete this booking slip?")) {
       try {
-        const response = await axios.delete(
-          `http://10.80.21.37:20505/api/admin/payment/booking-slips/${booking_id}`
+        const response = await apiClient.delete(
+          `/admin/payment/booking-slips/${booking_id}`
         );
         swal("Success", response.data.message, "success");
         fetchBookingSlips();
@@ -247,3 +247,4 @@ const styles = {
   submitButton: { backgroundColor: "#28A745", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer", color: "#FFF", fontWeight: "bold" },
   cancelButton: { backgroundColor: "#6C757D", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer", color: "#FFF", fontWeight: "bold" },
 };
+

@@ -1,7 +1,7 @@
 // pages/petTypes.js
 
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import apiClient from "../utils/apiClient";
 import swal from "sweetalert";
 import CountUp from "react-countup";
 import Sidebar from "../components/Sidebar";
@@ -22,8 +22,8 @@ export default function PetTypes() {
   // ดึงข้อมูล pet types จาก API
   const fetchPetTypes = useCallback(() => {
     setLoading(true);
-    axios
-      .get("http://10.80.21.37:20505/api/admin/pet-types/")
+    apiClient
+      .get("/admin/pet-types/")
       .then((response) => {
         setPetTypes(response.data || []); // ใช้ response.data โดยตรง
         setLoading(false);
@@ -71,8 +71,8 @@ export default function PetTypes() {
     e.preventDefault();
     try {
       if (modalMode === "add") {
-        const response = await axios.post(
-          "http://10.80.21.37:20505/api/admin/pet-types",
+        const response = await apiClient.post(
+          "/admin/pet-types",
           {
             type_name: formData.type_name,
             description: formData.description,
@@ -80,8 +80,8 @@ export default function PetTypes() {
         );
         swal("Success", response.data.message, "success");
       } else if (modalMode === "edit") {
-        const response = await axios.put(
-          "http://10.80.21.37:20505/api/admin/pet-types",
+        const response = await apiClient.put(
+          "/admin/pet-types",
           {
             pet_type_id: formData.pet_type_id,
             type_name: formData.type_name,
@@ -106,8 +106,8 @@ export default function PetTypes() {
   const handleDelete = async (pet_type_id) => {
     if (confirm("Are you sure you want to delete this pet type?")) {
       try {
-        const response = await axios.delete(
-          `http://10.80.21.37:20505/api/admin/pet-types/${pet_type_id}`
+        const response = await apiClient.delete(
+          `/admin/pet-types/${pet_type_id}`
         );
         swal("Success", response.data.message, "success");
         fetchPetTypes();
@@ -367,3 +367,4 @@ const styles = {
     fontWeight: "bold",
   },
 };
+

@@ -1,5 +1,11 @@
 const { Pool } = require("pg");
-require("dotenv").config();
+try {
+  require("dotenv").config();
+} catch (err) {
+  if (err.code !== "MODULE_NOT_FOUND") {
+    throw err;
+  }
+}
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -21,3 +27,4 @@ pool.on("error", (err) => {
 module.exports = {
   query: (text, params) => pool.query(text, params),
 };
+
