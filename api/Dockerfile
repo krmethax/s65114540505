@@ -2,17 +2,15 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package metadata first to leverage Docker layer caching
 COPY package*.json ./
 
-# Install dependencies (รวม devDependencies สำหรับ dev mode)
-RUN npm install
+# Install deps plus dev tooling like nodemon needed by npm scripts
+RUN npm install --include=dev
 
 # Copy source code
 COPY . .
 
-# Expose port
 EXPOSE 3001
 
-# Start in dev mode
 CMD ["npm", "run", "dev"]

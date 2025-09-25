@@ -7,17 +7,31 @@ app.use(cors({ origin: "*", credentials: true }));
 
 app.use(express.json());
 
+const normalizeBasePath = (value) => {
+  if (!value || value === "/") {
+    return "";
+  }
+  const trimmed = value.trim();
+  const startsWithSlash = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  return startsWithSlash.endsWith("/")
+    ? startsWithSlash.slice(0, -1)
+    : startsWithSlash;
+};
+
+const basePath = normalizeBasePath(process.env.BASE_PATH);
+const withBasePath = (path = "/") => `${basePath}${path}`;
+
 const serviceTypesRoute = require("./routes/serviceTypes");
 const petTypesRoute = require("./routes/petTypes");
 const sitterRoute = require("./routes/sitters");
 const paymentRoute = require("./routes/payment");
 
-app.use("/api/admin/service-types", serviceTypesRoute);
-app.use("/api/admin/pet-types", petTypesRoute);
-app.use("/api/admin/sitter", sitterRoute);
-app.use("/api/admin/payment", paymentRoute);
+app.use(withBasePath("/api/admin/service-types"), serviceTypesRoute);
+app.use(withBasePath("/api/admin/pet-types"), petTypesRoute);
+app.use(withBasePath("/api/admin/sitter"), sitterRoute);
+app.use(withBasePath("/api/admin/payment"), paymentRoute);
 
-app.get("/", (req, res) => {
+app.get(withBasePath("/"), (req, res) => {
   res.send("API running");
 });
 

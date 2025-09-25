@@ -27,6 +27,7 @@ services:
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
       DB_PORT: 5432
+      BASE_PATH: /s65114540505
     expose:
       - "3001"
     depends_on:
@@ -36,7 +37,7 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.api.rule=PathPrefix(`/api`)'
+      - 'traefik.http.routers.api.rule=Host(`172.30.80.1`) && PathPrefix(`/s65114540505/api`)'
       - 'traefik.http.routers.api.entrypoints=web'
       - 'traefik.http.routers.api.priority=200'
       - 'traefik.http.services.api.loadbalancer.server.port=3001'
@@ -49,7 +50,9 @@ services:
     restart: always
     environment:
       NODE_ENV: development
-      NEXT_PUBLIC_API_BASE_URL: /api
+      BASE_PATH: /s65114540505
+      NEXT_PUBLIC_BASE_PATH: /s65114540505
+      NEXT_PUBLIC_API_BASE_URL: /s65114540505/api
     expose:
       - "3000"
     depends_on:
@@ -59,10 +62,11 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.website.rule=PathPrefix(`/`)'
+      - 'traefik.http.routers.website.rule=Host(`172.30.80.1`) && PathPrefix(`/s65114540505`)'
       - 'traefik.http.routers.website.entrypoints=web'
       - 'traefik.http.routers.website.priority=100'
       - 'traefik.http.services.website.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.website.middlewares=normalize-slashes'
 
   traefik:
     image: traefik:3.0
@@ -81,6 +85,57 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
+      - 'traefik.http.routers.redirect-root.rule=Host(`172.30.80.1`) && Path(`/`)' 
+      - 'traefik.http.routers.redirect-root.entrypoints=web'
+      - 'traefik.http.routers.redirect-root.priority=400'
+      - 'traefik.http.routers.redirect-root.middlewares=redirect-to-base'
+      - 'traefik.http.routers.redirect-root.service=noop@internal'
+      - 'traefik.http.routers.redirect-base.rule=Host(`172.30.80.1`) && Path(`/s65114540505/`)' 
+      - 'traefik.http.routers.redirect-base.entrypoints=web'
+      - 'traefik.http.routers.redirect-base.priority=350'
+      - 'traefik.http.routers.redirect-base.middlewares=strip-trailing'
+      - 'traefik.http.routers.redirect-base.service=noop@internal'
+      - 'traefik.http.routers.redirect-service.rule=Host(`172.30.80.1`) && (Path(`/service`) || Path(`/service/`))'
+      - 'traefik.http.routers.redirect-service.entrypoints=web'
+      - 'traefik.http.routers.redirect-service.priority=360'
+      - 'traefik.http.routers.redirect-service.middlewares=redirect-service'
+      - 'traefik.http.routers.redirect-service.service=noop@internal'
+      - 'traefik.http.routers.redirect-pet-types.rule=Host(`172.30.80.1`) && (Path(`/pet_types`) || Path(`/pet_types/`))'
+      - 'traefik.http.routers.redirect-pet-types.entrypoints=web'
+      - 'traefik.http.routers.redirect-pet-types.priority=361'
+      - 'traefik.http.routers.redirect-pet-types.middlewares=redirect-pet-types'
+      - 'traefik.http.routers.redirect-pet-types.service=noop@internal'
+      - 'traefik.http.routers.redirect-payment.rule=Host(`172.30.80.1`) && (Path(`/payment`) || Path(`/payment/`))'
+      - 'traefik.http.routers.redirect-payment.entrypoints=web'
+      - 'traefik.http.routers.redirect-payment.priority=362'
+      - 'traefik.http.routers.redirect-payment.middlewares=redirect-payment'
+      - 'traefik.http.routers.redirect-payment.service=noop@internal'
+      - 'traefik.http.routers.redirect-dashboard.rule=Host(`172.30.80.1`) && (Path(`/dashboard`) || Path(`/dashboard/`))'
+      - 'traefik.http.routers.redirect-dashboard.entrypoints=web'
+      - 'traefik.http.routers.redirect-dashboard.priority=363'
+      - 'traefik.http.routers.redirect-dashboard.middlewares=redirect-dashboard'
+      - 'traefik.http.routers.redirect-dashboard.service=noop@internal'
+      - 'traefik.http.middlewares.redirect-to-base.redirectregex.regex=^https?://([^/]+)/?$'
+      - 'traefik.http.middlewares.redirect-to-base.redirectregex.replacement=http://$1/s65114540505'
+      - 'traefik.http.middlewares.redirect-to-base.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.strip-trailing.redirectregex.regex=^https?://([^/]+)/s65114540505/$'
+      - 'traefik.http.middlewares.strip-trailing.redirectregex.replacement=http://$1/s65114540505'
+      - 'traefik.http.middlewares.strip-trailing.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.redirect-service.redirectregex.regex=^https?://([^/]+)/service/?$'
+      - 'traefik.http.middlewares.redirect-service.redirectregex.replacement=http://$1/s65114540505/service'
+      - 'traefik.http.middlewares.redirect-service.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.redirect-pet-types.redirectregex.regex=^https?://([^/]+)/pet_types/?$'
+      - 'traefik.http.middlewares.redirect-pet-types.redirectregex.replacement=http://$1/s65114540505/pet_types'
+      - 'traefik.http.middlewares.redirect-pet-types.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.redirect-payment.redirectregex.regex=^https?://([^/]+)/payment/?$'
+      - 'traefik.http.middlewares.redirect-payment.redirectregex.replacement=http://$1/s65114540505/payment'
+      - 'traefik.http.middlewares.redirect-payment.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.redirect-dashboard.redirectregex.regex=^https?://([^/]+)/dashboard/?$'
+      - 'traefik.http.middlewares.redirect-dashboard.redirectregex.replacement=http://$1/s65114540505/dashboard'
+      - 'traefik.http.middlewares.redirect-dashboard.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.normalize-slashes.redirectregex.regex=^https?://([^/]+)/s65114540505//+(.*)$'
+      - 'traefik.http.middlewares.normalize-slashes.redirectregex.replacement=http://$1/s65114540505/$2'
+      - 'traefik.http.middlewares.normalize-slashes.redirectregex.permanent=true'
 
 networks:
   backend:
