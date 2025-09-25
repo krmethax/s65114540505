@@ -37,7 +37,7 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.api.rule=Host(`172.30.80.1`) && PathPrefix(`/s65114540505/api`)'
+      - 'traefik.http.routers.api.rule=Host(`10.80.21.9`) && PathPrefix(`/s65114540505/api`)'
       - 'traefik.http.routers.api.entrypoints=web'
       - 'traefik.http.routers.api.priority=200'
       - 'traefik.http.services.api.loadbalancer.server.port=3001'
@@ -62,7 +62,7 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.website.rule=Host(`172.30.80.1`) && PathPrefix(`/s65114540505`)'
+      - 'traefik.http.routers.website.rule=Host(`10.80.21.9`) && PathPrefix(`/s65114540505`)'
       - 'traefik.http.routers.website.entrypoints=web'
       - 'traefik.http.routers.website.priority=100'
       - 'traefik.http.services.website.loadbalancer.server.port=3000'
@@ -85,37 +85,37 @@ services:
       - backend
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.redirect-root.rule=Host(`172.30.80.1`) && Path(`/`)' 
+      - 'traefik.http.routers.redirect-root.rule=Host(`10.80.21.9`) && Path(`/`)' 
       - 'traefik.http.routers.redirect-root.entrypoints=web'
       - 'traefik.http.routers.redirect-root.priority=400'
       - 'traefik.http.routers.redirect-root.middlewares=redirect-to-base'
       - 'traefik.http.routers.redirect-root.service=noop@internal'
-      - 'traefik.http.routers.redirect-base.rule=Host(`172.30.80.1`) && Path(`/s65114540505/`)' 
+      - 'traefik.http.routers.redirect-base.rule=Host(`10.80.21.9`) && Path(`/s65114540505/`)' 
       - 'traefik.http.routers.redirect-base.entrypoints=web'
       - 'traefik.http.routers.redirect-base.priority=350'
       - 'traefik.http.routers.redirect-base.middlewares=strip-trailing'
       - 'traefik.http.routers.redirect-base.service=noop@internal'
-      - 'traefik.http.routers.redirect-service.rule=Host(`172.30.80.1`) && (Path(`/service`) || Path(`/service/`))'
+      - 'traefik.http.routers.redirect-service.rule=Host(`10.80.21.9`) && (Path(`/service`) || Path(`/service/`))'
       - 'traefik.http.routers.redirect-service.entrypoints=web'
       - 'traefik.http.routers.redirect-service.priority=360'
       - 'traefik.http.routers.redirect-service.middlewares=redirect-service'
       - 'traefik.http.routers.redirect-service.service=noop@internal'
-      - 'traefik.http.routers.redirect-pet-types.rule=Host(`172.30.80.1`) && (Path(`/pet_types`) || Path(`/pet_types/`))'
+      - 'traefik.http.routers.redirect-pet-types.rule=Host(`10.80.21.9`) && (Path(`/pet_types`) || Path(`/pet_types/`))'
       - 'traefik.http.routers.redirect-pet-types.entrypoints=web'
       - 'traefik.http.routers.redirect-pet-types.priority=361'
       - 'traefik.http.routers.redirect-pet-types.middlewares=redirect-pet-types'
       - 'traefik.http.routers.redirect-pet-types.service=noop@internal'
-      - 'traefik.http.routers.redirect-payment.rule=Host(`172.30.80.1`) && (Path(`/payment`) || Path(`/payment/`))'
+      - 'traefik.http.routers.redirect-payment.rule=Host(`10.80.21.9`) && (Path(`/payment`) || Path(`/payment/`))'
       - 'traefik.http.routers.redirect-payment.entrypoints=web'
       - 'traefik.http.routers.redirect-payment.priority=362'
       - 'traefik.http.routers.redirect-payment.middlewares=redirect-payment'
       - 'traefik.http.routers.redirect-payment.service=noop@internal'
-      - 'traefik.http.routers.redirect-dashboard.rule=Host(`172.30.80.1`) && (Path(`/dashboard`) || Path(`/dashboard/`))'
+      - 'traefik.http.routers.redirect-dashboard.rule=Host(`10.80.21.9`) && (Path(`/dashboard`) || Path(`/dashboard/`))'
       - 'traefik.http.routers.redirect-dashboard.entrypoints=web'
       - 'traefik.http.routers.redirect-dashboard.priority=363'
       - 'traefik.http.routers.redirect-dashboard.middlewares=redirect-dashboard'
       - 'traefik.http.routers.redirect-dashboard.service=noop@internal'
-      - 'traefik.http.routers.redirect-api.rule=Host(`172.30.80.1`) && (Path(`/api`) || PathPrefix(`/api/`))'
+      - 'traefik.http.routers.redirect-api.rule=Host(`10.80.21.9`) && (Path(`/api`) || PathPrefix(`/api/`))'
       - 'traefik.http.routers.redirect-api.entrypoints=web'
       - 'traefik.http.routers.redirect-api.priority=364'
       - 'traefik.http.routers.redirect-api.middlewares=redirect-api'
@@ -148,3 +148,4 @@ services:
 networks:
   backend:
     driver: bridge
+
